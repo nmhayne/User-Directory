@@ -7,62 +7,61 @@ import Employee from "./Components/Employee";
 
 
 class App extends React.Component {
-  
-  state = {
-    employeeArray : [],
-    testArray: [1,2,3]
-  }
-  
-   componentDidMount() {    
-      for(let i=0;i<10;i++){
+    // STATE DECLARATIONS
+    state = {
+        employeeArray : [],
+        testArray: [1,2,3]
+    }
+    
+    componentDidMount() {    
+        // FOR LOOP 10 ITTERATIONS 
+        for(let i=0;i<10;i++){
+            let newUser = this.createUser();
+            console.log(newUser);
+            console.log();
+        };
+    } 
+    
+
+    createUser() {
+        let employeeObj={};
         API.getRandomUser()
-        .then(res => {
-          // console.log(res.data.results[0]);
-          // let employeeArrayNew=[];
-          // this.state.employeeArrayNew.push(res.data.results[0]);
-          
-         this.setState({employeeArray : res.data.result})
-
-          // picture=res.data.results[0].picture.large;
-      })
+            .then(res => {
+                // employeeObj={
+                //     fName : res.data.results[0].name.first,
+                //     lName : res.data.results[0].name.last, 
+                //     cell : res.data.results[0].cell,
+                //     img : res.data.results[0].picture.large,
+                //     dob : res.data.results[0].dob.date
+                
+                    employeeObj.fName = res.data.results[0].name.first;
+                    employeeObj.lName = res.data.results[0].name.last; 
+                    employeeObj.cell = res.data.results[0].cell;
+                    employeeObj.img = res.data.results[0].picture.large;
+                    employeeObj.dob = res.data.results[0].dob.date;
+            })
         .catch(err => {console.log(err);})
-  };
-  console.log(this.state.employeeArray);  
-  // console.log("Message");
-  {this.state.employeeArray.map(
-    employee => (
-    console.log(employee.email)
-    )
-  )
-}
-}
-  render(){
-     return(
-    <div>
 
-      <h1>Employee Directory</h1>
-
-      <h5>Click on Carrots to filter by heading or use the search box to narrow your search</h5>
-
-      {this.state.employeeArray.map(
-        (employee) => (<Employee name={employee.email}></Employee>)
-      )
+        let newEmployeeArray=this.state.employeeArray;
+        newEmployeeArray.push(employeeObj);
+        this.state.msetState(employeeArray : newEmployeeArray)
     }
-      
-      {this.state.employeeArray.map(
-        (employee) => (<h1>{employee}</h1>)
-      )
+
+    render() {
+        return(
+            
+            <div>
+            
+                <h1>Employee Directory</h1>
+                
+                <h5>Click on Carrots to filter by heading or use the search box to narrow your search</h5>
+                
+                {this.state.employeeArray}
+
+            </div>
+            )
+        }
     }
-      <h1>Finished list</h1>
-      {/* {this.state.employeeArray.map( employee => <Employee image={employee.picture.large}/>)} */}
-
-{/* 
-      <Employee image={this.state.employeeArray[0].picture.large}
-></Employee> */}
-
-    </div>
-    )
-  }
-}
-
-export default App;
+    
+    export default App;
+    
